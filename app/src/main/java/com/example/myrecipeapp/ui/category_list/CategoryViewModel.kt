@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myrecipeapp.data.model.Category
-import com.example.myrecipeapp.data.remote.recipeService
+import com.example.myrecipeapp.data.remote.RetrofitInstance.api
 import kotlinx.coroutines.launch
 
 class CategoryViewModel: ViewModel() {
@@ -24,7 +24,7 @@ class CategoryViewModel: ViewModel() {
 
             try {
 
-                val response  = recipeService.getCategories()
+                val response  = api.getCategories()
                 _categorieState.value = _categorieState.value.copy(
                     loading = false,
                     list = response.categories,

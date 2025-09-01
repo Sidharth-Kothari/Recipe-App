@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,7 @@ import coil.compose.AsyncImage
 import com.example.myrecipeapp.data.model.Category
 
 @Composable
-fun CategoryDetailScreen(category: Category) {
+fun CategoryDetailScreen(category: Category,onShowDishesClicked: (String) -> Unit) {
 
 
     Column(
@@ -44,5 +45,8 @@ fun CategoryDetailScreen(category: Category) {
             modifier = Modifier.verticalScroll(rememberScrollState())
         )
 
+        Button(onClick = { onShowDishesClicked(category.strCategory) }) {
+            Text("Show Dishes")
+        }
     }
 }
