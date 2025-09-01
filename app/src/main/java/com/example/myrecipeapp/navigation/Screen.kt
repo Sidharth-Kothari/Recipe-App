@@ -1,4 +1,4 @@
-package com.example.myrecipeapp
+package com.example.myrecipeapp.navigation
 
 sealed class Screen(val route : String) {
 
