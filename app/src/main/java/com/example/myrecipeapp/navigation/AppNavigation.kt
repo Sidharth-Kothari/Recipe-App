@@ -15,6 +15,8 @@ import com.example.myrecipeapp.ui.category_list.CategoryListScreen
 import com.example.myrecipeapp.data.model.Category
 import com.example.myrecipeapp.ui.dishes_list.DishesListScreen
 import com.example.myrecipeapp.ui.dishes_list.DishesViewModel
+import com.example.myrecipeapp.ui.recipe_detail.RecipeDetailScreen
+import com.example.myrecipeapp.ui.recipe_detail.RecipeDetailViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -23,6 +25,7 @@ fun AppNavigation(navController: NavHostController) {
     val viewState by recipeViewModel.categoriesState
 
     NavHost(navController = navController,startDestination = Screen.RecipeScreen.route){
+
         composable(route = Screen.RecipeScreen.route) {
             CategoryListScreen(
                 viewState = viewState,
@@ -65,10 +68,25 @@ fun AppNavigation(navController: NavHostController) {
             DishesListScreen(
                 viewState = viewState,
                 navigateToRecipe = { mealId ->
-                    println("Navigate to recipe with ID: $mealId")
+                    navController.navigate(Screen.RecipeDetailScreen.createRoute(mealId))
                 }
             )
 
+        }
+
+        composable(
+            route = Screen.RecipeDetailScreen.route,
+            arguments = listOf(navArgument("mealId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val mealId = backStackEntry.arguments?.getString("mealId") ?: ""
+            val viewModel: RecipeDetailViewModel = viewModel()
+            val viewState by viewModel.mealDetailState
+
+            LaunchedEffect(key1 = mealId) {
+                viewModel.fetchMealDetails(mealId)
+            }
+
+            RecipeDetailScreen(viewState = viewState)
         }
 
     }

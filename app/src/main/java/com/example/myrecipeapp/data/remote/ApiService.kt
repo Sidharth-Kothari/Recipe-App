@@ -1,6 +1,7 @@
 package com.example.myrecipeapp.data.remote
 
 import com.example.myrecipeapp.data.model.CategoriesResponse
+import com.example.myrecipeapp.data.model.MealDetailResponse
 import com.example.myrecipeapp.data.model.MealsResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,5 +31,8 @@ interface ApiService {
 
     @GET("filter.php")
     suspend fun getMealsByCategory(@Query("c") categoryName:String): MealsResponse
+
+    @GET("lookup.php")
+    suspend fun getMealDetailsById(@Query("i") mealId : String): MealDetailResponse
 
 }
