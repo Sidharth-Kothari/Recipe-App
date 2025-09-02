@@ -22,32 +22,57 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.myrecipeapp.data.model.Category
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryListScreen(
     modifier: Modifier = Modifier,
     viewState: CategoryViewModel.RecipeState,
-    navigateToDetail: (Category) -> Unit
+    navigateToDetail: (Category) -> Unit,
+    onSearchClicked: () -> Unit
 ) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Recipe App") },
+                actions = {
+                    // This is the search icon button
+                    IconButton(onClick = onSearchClicked) {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+                    }
+                }
+            )
+        }
+    ) { paddingValues -> // Scaffold provides padding that we must apply
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues) // Apply the padding here
+        ) {
+            when {
+                viewState.loading -> {
+                    CircularProgressIndicator(modifier.align(Alignment.Center))
+                }
 
-        when {
-            viewState.loading -> {
-                CircularProgressIndicator(modifier.align(Alignment.Center))
-            }
+                viewState.error != null -> {
+                    Text("Error Occurred")
+                }
 
-            viewState.error != null -> {
-                Text("Error Occurred")
-                Log.d("loading failed","${viewState.error}")
-            }
-
-            else -> {
-//                Display Categories
-                CategoryScreen(categories = viewState.list,navigateToDetail)
+                else -> {
+                    CategoryScreen(categories = viewState.list, navigateToDetail)
+                }
             }
         }
     }
-
 }
 
 @Composable

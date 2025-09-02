@@ -17,6 +17,8 @@ import com.example.myrecipeapp.ui.dishes_list.DishesListScreen
 import com.example.myrecipeapp.ui.dishes_list.DishesViewModel
 import com.example.myrecipeapp.ui.recipe_detail.RecipeDetailScreen
 import com.example.myrecipeapp.ui.recipe_detail.RecipeDetailViewModel
+import com.example.myrecipeapp.ui.search.SearchScreen
+import com.example.myrecipeapp.ui.search.SearchViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -35,6 +37,9 @@ fun AppNavigation(navController: NavHostController) {
                     navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
                     navController.navigate(Screen.DetailScreen.route)
 
+                },
+                onSearchClicked = {
+                    navController.navigate(Screen.SearchScreen.route)
                 }
             )
         }
@@ -87,6 +92,20 @@ fun AppNavigation(navController: NavHostController) {
             }
 
             RecipeDetailScreen(viewState = viewState)
+        }
+
+        composable(route = Screen.SearchScreen.route) {
+            val viewModel: SearchViewModel = viewModel()
+            val viewState by viewModel.searchState
+
+            SearchScreen(
+                viewState = viewState,
+                onQueryChange = viewModel::onQueryChange, // Use a function reference
+                onSearchClicked = viewModel::performSearch,
+                navigateToRecipe = { mealId ->
+                    navController.navigate(Screen.RecipeDetailScreen.createRoute(mealId))
+                }
+            )
         }
 
     }
