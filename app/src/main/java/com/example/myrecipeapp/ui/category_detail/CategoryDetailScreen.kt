@@ -23,7 +23,10 @@ fun CategoryDetailScreen(category: Category,onShowDishesClicked: (String) -> Uni
 
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -42,7 +45,6 @@ fun CategoryDetailScreen(category: Category,onShowDishesClicked: (String) -> Uni
         Text(
             text = category.strCategoryDescription,
             textAlign = TextAlign.Justify,
-            modifier = Modifier.verticalScroll(rememberScrollState())
         )
 
         Button(onClick = { onShowDishesClicked(category.strCategory) }) {
